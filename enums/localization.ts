@@ -2,9 +2,9 @@ import {Enumify} from "enumify";
 
 export class Localization extends Enumify {
 
-    static en = new Localization("English", "en", "en-GB");
-    static cs = new Localization("Czech", "cs", "cs-CZ");
-    static pl = new Localization("Polish", "pl", "pl-PL");
+    static EN = new Localization("English", "en", "en-GB");
+    static CS = new Localization("Czech", "cs", "cs-CZ");
+    static PL = new Localization("Polish", "pl", "pl-PL");
     static _ = Localization.closeEnum();
 
     value: string;

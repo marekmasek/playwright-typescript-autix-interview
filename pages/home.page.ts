@@ -1,5 +1,6 @@
 import {expect, Page} from "@playwright/test";
 import {Localization} from "../enums/localization";
+import {TestProperties} from "../config/test.properties";
 
 export class HomePage {
     page: Page;
@@ -27,15 +28,22 @@ export class HomePage {
         "Jaké jsou hlavní rozdíly mezi off-line a on-line řešeními"
     ];
 
+    public async navigate(localization: Localization) {
+        await this.page.goto(HomePage.getUrl(localization));
+    }
+
+    private static getUrl(localization: Localization) {
+        return TestProperties.getUrl() + (Localization.EN === localization ? '' : localization.isoCode);
+    }
 
     public async checkLanguage(localization: Localization) {
         await expect(this.HTML()).toHaveAttribute("lang", localization.htmlLang);
 
         const expectedTexts = (() => {
                 switch (localization) {
-                    case Localization.cs:
+                    case Localization.CS:
                         return HomePage.TEXTS_CZ;
-                    case Localization.en:
+                    case Localization.EN:
                         return HomePage.TEXTS_EN;
                     default:
                         throw new Error("Expected texts are not implemented in tests for this localization, they have to be added");
@@ -47,6 +55,6 @@ export class HomePage {
     }
 
     public async verifyUrl(localization: Localization) {
-        await expect(this.page.url()).toBe("https://autix.eu/" + (Localization.en == localization ? "" : localization.isoCode));
+        await expect(this.page.url(), "Page url should be as expected").toBe(HomePage.getUrl(localization));
     }
 }
